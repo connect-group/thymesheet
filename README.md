@@ -72,10 +72,10 @@ The Thymesheet "thymesheet.ts" file looks like this,
     }
      
     //td[0] {
-        th:text: "${prod.name}"
+        th-text: "${prod.name}"
     }
      
     //td[1] {
-        th:text: "${#numbers.formatDecimal(prod.price,1,2)}"
+        th-text: "${#numbers.formatDecimal(prod.price,1,2)}"
     }
     
