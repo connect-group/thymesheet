@@ -79,3 +79,5 @@ The Thymesheet "thymesheet.ts" file looks like this,
         th-text: "${#numbers.formatDecimal(prod.price,1,2)}"
     }
     
+## Sample Code
+A sample application can be found at https://github.com/connect-group/thymesheet-sample
