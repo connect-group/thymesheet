@@ -8,7 +8,7 @@ import com.connect_group.thymesheet.impl.ThymesheetTemplateModeHandler;
 public class ThymesheetHtml5TemplateModeHandler extends ThymesheetTemplateModeHandler {
 
 	protected ThymesheetHtml5TemplateModeHandler() {
-		super("HTML5", 
+		super("THYMESHEET_HTML5", 
                 new XhtmlAndHtml5NonValidatingSAXTemplateParser(getPoolSize()),
                 new XhtmlHtml5TemplateWriter());
 

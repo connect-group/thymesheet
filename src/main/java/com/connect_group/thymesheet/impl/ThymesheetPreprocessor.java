@@ -11,12 +11,14 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.thymeleaf.dom.DOMSelector;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.NestableNode;
 import org.thymeleaf.dom.Node;
+import org.thymeleaf.util.StringUtils;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
@@ -77,6 +79,7 @@ public class ThymesheetPreprocessor {
 
 	protected void handleRule(Document document, String selectorText, Map<String,String> styles) {
 
+		selectorText = fixSelectorSyntax(selectorText);
 		DOMSelector selector = new DOMSelector(selectorText);
 		List<Node> matches = selector.select(document);
 		for(Node matchedNode : matches) {
@@ -90,6 +93,13 @@ public class ThymesheetPreprocessor {
 		}
 	}
 	
+	private String fixSelectorSyntax(String selectorText) {
+		
+		
+		String result = selectorText.replaceAll(" ", "//");
+		return result;
+	}
+
 	private String getDataAttributeValue(String value) {
 		if(value==null) return "";
 		
