@@ -11,14 +11,12 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.Set;
 
-import org.thymeleaf.dom.DOMSelector;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.NestableNode;
 import org.thymeleaf.dom.Node;
-import org.thymeleaf.util.StringUtils;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
@@ -26,6 +24,8 @@ import org.w3c.dom.css.CSSStyleDeclaration;
 import org.w3c.dom.css.CSSStyleRule;
 import org.w3c.dom.css.CSSStyleSheet;
 
+import com.connect_group.thymesheet.css.selectors.NodeSelectorException;
+import com.connect_group.thymesheet.css.selectors.dom.DOMNodeSelector;
 import com.steadystate.css.parser.CSSOMParser;
 
 public class ThymesheetPreprocessor {
@@ -38,7 +38,11 @@ public class ThymesheetPreprocessor {
 		List<String> filePaths = getThymesheetFilePaths(document);
 		InputStream thymesheetInputStream = getInputStream(filePaths);
 		CSSRuleList ruleList = getRuleList(thymesheetInputStream);
-		applyRules(document, ruleList);
+		try {
+			applyRules(document, ruleList);
+		} catch (NodeSelectorException e) {
+			throw new IOException("Invalid CSS Selector", e);
+		}
 		removeThymesheetLinks(document);
 	}
 
@@ -56,7 +60,7 @@ public class ThymesheetPreprocessor {
 		}
 	}
 
-	private void applyRules(Document document, CSSRuleList ruleList) {
+	private void applyRules(Document document, CSSRuleList ruleList) throws NodeSelectorException {
 		for (int i = 0; i < ruleList.getLength(); i++) {
 			CSSRule rule = ruleList.item(i);
 			if (rule instanceof CSSStyleRule) {
@@ -77,11 +81,10 @@ public class ThymesheetPreprocessor {
 		return result;
 	}
 
-	protected void handleRule(Document document, String selectorText, Map<String,String> styles) {
+	protected void handleRule(Document document, String selectorText, Map<String,String> styles) throws NodeSelectorException {
 
-		selectorText = fixSelectorSyntax(selectorText);
-		DOMSelector selector = new DOMSelector(selectorText);
-		List<Node> matches = selector.select(document);
+		DOMNodeSelector selector = new DOMNodeSelector(document);
+		Set<Node> matches = selector.querySelectorAll(selectorText);
 		for(Node matchedNode : matches) {
 			if(matchedNode instanceof Element) {
 				Element element = (Element)matchedNode;
@@ -91,13 +94,6 @@ public class ThymesheetPreprocessor {
 		        }
 			}
 		}
-	}
-	
-	private String fixSelectorSyntax(String selectorText) {
-		
-		
-		String result = selectorText.replaceAll(" ", "//");
-		return result;
 	}
 
 	private String getDataAttributeValue(String value) {

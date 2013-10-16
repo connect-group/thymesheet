@@ -17,6 +17,7 @@ import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSStyleDeclaration;
 import org.w3c.dom.css.CSSStyleRule;
 
+import com.connect_group.thymesheet.css.selectors.NodeSelectorException;
 import com.connect_group.thymesheet.impl.ThymesheetPreprocessor;
 
 public class ThymesheetPreprocessorTests {
@@ -168,7 +169,7 @@ public class ThymesheetPreprocessorTests {
 	}
 	
 	@Test
-	public void applySingleRule() {
+	public void applySingleRule() throws NodeSelectorException {
 		ThymesheetPreprocessor preprocess = new ThymesheetPreprocessor();
 		Document document = createDocWithLinks();
 		LinkedHashMap<String,String> properties = new LinkedHashMap<String,String>();
