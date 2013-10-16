@@ -1,6 +1,6 @@
 # Thymesheet
 
-CSS-inspired Pre-Processing extension to @Thymeleaf
+CSS-inspired Pre-Processing extension to @Thymeleaf which supports CSS3 selectors.
 
 
 ## What is Thymeleaf?
@@ -63,19 +63,19 @@ The HTML looks like this,
 
 The Thymesheet "thymesheet.ts" file looks like this,
 
-    //th[0] {
+    table > thead > tr th:first-child {
         th-text: "#{msgs.headers.name}"
     }
      
-    //th[1] {
+    table > thead > tr th:nth-child(2) {
         th-text: "#{msgs.headers.price}"
     }
      
-    //td[0] {
+    table > tbody > tr > td:first-child {
         th-text: "${prod.name}"
     }
      
-    //td[1] {
+    table > tbody > tr > td:nth-child(2) {
         th-text: "${#numbers.formatDecimal(prod.price,1,2)}"
     }
     
