@@ -9,12 +9,15 @@ import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.templateparser.ITemplateParser;
 
+import com.connect_group.thymesheet.ServletContextURLFactory;
+
 public class ThymesheetTemplateParser implements ITemplateParser {
-	private ITemplateParser decoratedParser;
-	private ThymesheetPreprocessor preprocessor = new ThymesheetPreprocessor();
+	private final ITemplateParser decoratedParser;
+	private final ThymesheetPreprocessor preprocessor; //= new ThymesheetPreprocessor();
 	
-    public ThymesheetTemplateParser(ITemplateParser decoratedParser) {
-    	this.decoratedParser = decoratedParser;
+    public ThymesheetTemplateParser(ITemplateParser parser, ServletContextURLFactory urlFactory) {
+    	this.decoratedParser = parser;
+    	this.preprocessor = new ThymesheetPreprocessor(urlFactory);
     }
 
 	public Document parseTemplate(Configuration configuration,
@@ -23,7 +26,7 @@ public class ThymesheetTemplateParser implements ITemplateParser {
 		try {
 			preprocessor.preprocess(doc);
 		} catch (IOException e) {
-			throw new UnsupportedOperationException(e.getMessage());
+			throw new UnsupportedOperationException(e.getMessage(), e);
 		}
 		return doc;
 	}

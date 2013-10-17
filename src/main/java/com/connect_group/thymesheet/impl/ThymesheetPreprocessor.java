@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.SequenceInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,6 +26,7 @@ import org.w3c.dom.css.CSSStyleDeclaration;
 import org.w3c.dom.css.CSSStyleRule;
 import org.w3c.dom.css.CSSStyleSheet;
 
+import com.connect_group.thymesheet.ServletContextURLFactory;
 import com.connect_group.thymesheet.css.selectors.NodeSelectorException;
 import com.connect_group.thymesheet.css.selectors.dom.DOMNodeSelector;
 import com.steadystate.css.parser.CSSOMParser;
@@ -32,8 +35,19 @@ import com.steadystate.css.parser.SACParserCSS3;
 public class ThymesheetPreprocessor {
 	private static final String LINK_ELEMENT_NAME = "link";
 	private static final String LINK_REL_ATTRIBUTE_VALUE = "thymesheet";
+	private final ServletContextURLFactory urlFactory;
 	
-	public ThymesheetPreprocessor() {}
+	public ThymesheetPreprocessor() {
+		super();
+		urlFactory = null;
+	}
+	
+	public ThymesheetPreprocessor(ServletContextURLFactory urlFactory) {
+		super();
+		this.urlFactory = urlFactory;
+	}
+	
+	
 	
 	public void preprocess(Document document) throws IOException {
 		List<String> filePaths = getThymesheetFilePaths(document);
@@ -150,13 +164,44 @@ public class ThymesheetPreprocessor {
 	
 	protected void openFiles(List<String> filePaths, List<InputStream> opened) throws FileNotFoundException {
 		for(String filePath : filePaths) {
-			InputStream stream = getClass().getResourceAsStream(filePath);
+			InputStream stream;
+			if(isClassPath(filePath)) {
+				stream = getClass().getResourceAsStream(fixClassPath(filePath));
+			} else {
+				try {
+					stream = getFileFromWebapp(filePath);
+				} catch (MalformedURLException e) {
+					throw new FileNotFoundException("Unable to open " + filePath + " - " + e.getMessage());
+				} catch (IOException e) {
+					throw new FileNotFoundException("Unable to open " + filePath + " - " + e.getMessage());
+				}
+
+			}
+			
+			
+			
 			if(stream==null) {
 				throw new FileNotFoundException("Thymesheet file \""+filePath+"\" not found.");
 			}
 			
 			opened.add(stream);
 		}
+	}
+
+	private String fixClassPath(String filePath) {
+		return filePath.replace("classpath:", "");
+	}
+
+	private boolean isClassPath(String filePath) {
+		return urlFactory == null || filePath.startsWith("classpath:");
+	}
+	
+	private InputStream getFileFromWebapp(String filepath) throws IOException {
+		URL thymesheetUrl = urlFactory.getURL(filepath);
+		if(thymesheetUrl==null) {
+			throw new FileNotFoundException("File \"" + filepath + "\" not found.");
+		}
+		return  thymesheetUrl.openStream();
 	}
 
 	protected List<String> getThymesheetFilePaths(Document document) {
