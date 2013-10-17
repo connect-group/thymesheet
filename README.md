@@ -66,18 +66,23 @@ The Thymesheet "thymesheet.ts" file looks like this,
     table > thead > tr th:first-child {
         th-text: "#{msgs.headers.name}"
     }
-     
+    
     table > thead > tr th:nth-child(2) {
         th-text: "#{msgs.headers.price}"
     }
-     
+    
+    table > tbody > tr {
+	    th-each:"prod : ${allProducts}";
+    }
+    
     table > tbody > tr > td:first-child {
         th-text: "${prod.name}"
     }
-     
+    
     table > tbody > tr > td:nth-child(2) {
         th-text: "${#numbers.formatDecimal(prod.price,1,2)}"
     }
+
     
 ## Sample Code
 A sample application can be found at https://github.com/connect-group/thymesheet-sample
