@@ -27,6 +27,7 @@ import org.w3c.dom.css.CSSStyleSheet;
 import com.connect_group.thymesheet.css.selectors.NodeSelectorException;
 import com.connect_group.thymesheet.css.selectors.dom.DOMNodeSelector;
 import com.steadystate.css.parser.CSSOMParser;
+import com.steadystate.css.parser.SACParserCSS3;
 
 public class ThymesheetPreprocessor {
 	private static final String LINK_ELEMENT_NAME = "link";
@@ -118,7 +119,7 @@ public class ThymesheetPreprocessor {
 
 	CSSRuleList getRuleList(InputStream stream) throws IOException {
 		InputSource source = new InputSource(new InputStreamReader(stream));
-        CSSOMParser parser = new CSSOMParser();
+        CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
         CSSStyleSheet stylesheet = parser.parseStyleSheet(source, null, null);
         CSSRuleList ruleList = stylesheet.getCssRules();
         
