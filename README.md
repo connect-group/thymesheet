@@ -91,6 +91,6 @@ A sample application can be found at https://github.com/connect-group/thymesheet
 More information can be found on the [https://github.com/connect-group/thymesheet/wiki](Wiki).
 
 ## Additional Credits
-Thymesheet is an extension for [http://www.thymeleaf.org/](Thymeleaf) v2.1 which is Apache 2 licensed.
-It has one other dependancy, [http://cssparser.sourceforge.net/](cssparser) which is LGPL licensed.
-Additionally, the project uses a modified version of [https://github.com/chrsan/css-selectors](css-selectors) by Christer Sandberg, which is Apache 2 licensed.
+- Thymesheet is an extension for [Thymeleaf](http://www.thymeleaf.org/) v2.1 which is Apache 2 licensed.
+- It has one other dependancy, [cssparser](http://cssparser.sourceforge.net/) which is LGPL licensed.
+- Additionally, the project uses a modified version of [css-selectors](https://github.com/chrsan/css-selectors) by Christer Sandberg, which is Apache 2 licensed.
