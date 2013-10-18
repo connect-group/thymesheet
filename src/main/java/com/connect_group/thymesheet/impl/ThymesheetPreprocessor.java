@@ -8,27 +8,22 @@ import java.io.SequenceInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.NestableNode;
-import org.thymeleaf.dom.Node;
 import org.w3c.css.sac.InputSource;
-import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
-import org.w3c.dom.css.CSSStyleDeclaration;
 import org.w3c.dom.css.CSSStyleRule;
 import org.w3c.dom.css.CSSStyleSheet;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
 import com.connect_group.thymesheet.css.selectors.NodeSelectorException;
-import com.connect_group.thymesheet.css.selectors.dom.DOMNodeSelector;
 import com.steadystate.css.parser.CSSOMParser;
 import com.steadystate.css.parser.SACParserCSS3;
 
@@ -52,13 +47,34 @@ public class ThymesheetPreprocessor {
 	public void preprocess(Document document) throws IOException {
 		List<String> filePaths = getThymesheetFilePaths(document);
 		InputStream thymesheetInputStream = getInputStream(filePaths);
-		CSSRuleList ruleList = getRuleList(thymesheetInputStream);
+		AttributeRuleList attributeRules = getRuleList(thymesheetInputStream);
+		ElementRuleList elementRules=extractDOMModifications(attributeRules);
+		
 		try {
-			applyRules(document, ruleList);
+			attributeRules.applyTo(document);
+			elementRules.applyTo(document);
 		} catch (NodeSelectorException e) {
 			throw new IOException("Invalid CSS Selector", e);
 		}
 		removeThymesheetLinks(document);
+	}
+
+	private ElementRuleList extractDOMModifications(List<CSSStyleRule> ruleList) {
+		ElementRuleList modifierRules = new ElementRuleList();
+		
+		Iterator<CSSStyleRule> it = ruleList.iterator();
+		while(it.hasNext()) {
+			CSSStyleRule rule = it.next();
+			
+			PseudoClass pseudoModifier = getDOMModifier(rule.getSelectorText());
+			if(pseudoModifier!=null) {
+				ElementRule modifierRule = ElementRuleFactory.createElementRule(pseudoModifier, CSSUtil.asMap(rule.getStyle()));
+				modifierRules.add(modifierRule);
+				it.remove();
+			}
+		}
+		
+		return modifierRules;
 	}
 
 	private void removeThymesheetLinks(Document document) {
@@ -75,69 +91,22 @@ public class ThymesheetPreprocessor {
 		}
 	}
 
-	private void applyRules(Document document, CSSRuleList ruleList) throws NodeSelectorException {
-		for (int i = 0; i < ruleList.getLength(); i++) {
-			CSSRule rule = ruleList.item(i);
-			if (rule instanceof CSSStyleRule) {
-				CSSStyleRule styleRule=(CSSStyleRule)rule;
-				handleRule(document, styleRule.getSelectorText(), asMap(styleRule.getStyle()));
-			}
-		}
-	}
-
-	private Map<String, String> asMap(CSSStyleDeclaration styles) {
-		LinkedHashMap<String,String> result = new LinkedHashMap<String,String>();
+	protected PseudoClass getDOMModifier(String selectorText) {
 		
-		for (int j = 0; j < styles.getLength(); j++) {
-        	String property = getDataAttributeName(styles.item(j));
-        	String value = styles.getPropertyCSSValue(styles.item(j)).getCssText();
-        	result.put(property, value);
-        }
-		return result;
-	}
-
-	protected void handleRule(Document document, String selectorText, Map<String,String> styles) throws NodeSelectorException {
-
-		DOMNodeSelector selector = new DOMNodeSelector(document);
-		Set<Node> matches = selector.querySelectorAll(selectorText);
-		for(Node matchedNode : matches) {
-			if(matchedNode instanceof Element) {
-				Element element = (Element)matchedNode;
-		        for (Map.Entry<String,String> rule : styles.entrySet()) {
-		        	String property = getDataAttributeName(rule.getKey());
-		        	element.setAttribute(property, getDataAttributeValue(rule.getValue()));
-		        }
-			}
+		PseudoClass pseudoClass = PseudoClass.lastPseudoClassFromSelector(selectorText);
+		if(ElementRuleFactory.isDOMModifierPsuedoElement(pseudoClass.getName())) {
+			return pseudoClass;
 		}
+		return null;
 	}
-
-	private String getDataAttributeValue(String value) {
-		if(value==null) return "";
-		
-		if(value.startsWith("\"") && value.endsWith("\"")) {
-			value = value.substring(1, value.length()-1);
-		}
-		return value;
-	}
-
-	private String getDataAttributeName(String propertyName) {
-		if(propertyName==null) return "";
-		
-		propertyName = propertyName.replaceAll(":", "-");
-		
-		if(!propertyName.startsWith("data-")) {
-			propertyName = "data-" + propertyName;
-		}
-		return propertyName;
-	}
-
-	CSSRuleList getRuleList(InputStream stream) throws IOException {
+	
+	AttributeRuleList getRuleList(InputStream stream) throws IOException {
 		InputSource source = new InputSource(new InputStreamReader(stream));
         CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
         CSSStyleSheet stylesheet = parser.parseStyleSheet(source, null, null);
         CSSRuleList ruleList = stylesheet.getCssRules();
         
-        return ruleList;
+        return new AttributeRuleList(ruleList);
 	}
 
 	protected InputStream getInputStream(List<String> filePaths) throws IOException {

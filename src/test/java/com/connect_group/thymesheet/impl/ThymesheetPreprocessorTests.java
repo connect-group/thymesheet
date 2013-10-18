@@ -139,8 +139,10 @@ public class ThymesheetPreprocessorTests {
 		List<String> filePaths = new ArrayList<String>();
 		filePaths.add("/test.ts");
 		InputStream thymesheetInputStream = preprocess.getInputStream(filePaths);
-		CSSRuleList ruleList = preprocess.getRuleList(thymesheetInputStream);
-		List<SingleRule> rules = getSingleRules(ruleList);
+		AttributeRuleList attributeRules = preprocess.getRuleList(thymesheetInputStream);
+		
+		
+		List<SingleRule> rules = getSingleRules(attributeRules);
 		
 		assertEquals(3, rules.size());
 		assertEquals(new SingleRule("th:p", "th-utext", "\"'apple'\""), rules.get(0));
@@ -157,7 +159,7 @@ public class ThymesheetPreprocessorTests {
 		filePaths.add("/test.ts");
 		filePaths.add("/test2.ts");
 		InputStream thymesheetInputStream = preprocess.getInputStream(filePaths);
-		CSSRuleList ruleList = preprocess.getRuleList(thymesheetInputStream);
+		AttributeRuleList ruleList = preprocess.getRuleList(thymesheetInputStream);
 		List<SingleRule> rules = getSingleRules(ruleList);
 		
 		assertEquals(4, rules.size());
@@ -168,49 +170,25 @@ public class ThymesheetPreprocessorTests {
 
 	}
 	
-	@Test
-	public void applySingleRule() throws NodeSelectorException {
-		ThymesheetPreprocessor preprocess = new ThymesheetPreprocessor();
-		Document document = createDocWithLinks();
-		LinkedHashMap<String,String> properties = new LinkedHashMap<String,String>();
-		properties.put("th-text", "\"'tada'\"");
-		properties.put("th-utext", "\"'w00t'\"");
-		preprocess.handleRule(document, "#someid", properties);
-		
-		
-		List<Element> elements = document.getElementChildren();
-		Element html = elements.get(0);
-		Element body = html.getElementChildren().get(1);
-		Element para = body.getElementChildren().get(2);
-		
-		assertEquals("'tada'", para.getAttributeValue("data-th-text"));
-		assertEquals("'w00t'", para.getAttributeValue("data-th-utext"));
-		
-	}
+
 	
-	private List<SingleRule> getSingleRules(CSSRuleList ruleList) {
+	private List<SingleRule> getSingleRules(AttributeRuleList ruleList) {
 		ArrayList<SingleRule> result = new ArrayList<SingleRule>();
 		
-		for (int i = 0; i < ruleList.getLength(); i++) {
-			CSSRule rule = ruleList.item(i);
-			if (rule instanceof CSSStyleRule) {
-				CSSStyleRule styleRule=(CSSStyleRule)rule;
-				String selectorText = styleRule.getSelectorText();
-				CSSStyleDeclaration styles = styleRule.getStyle();
-				
-		        for (int j = 0; j < styles.getLength(); j++) {
-		             String property = styles.item(j);
-		             result.add(new SingleRule(selectorText, property, styles.getPropertyCSSValue(property).getCssText()));
-		        }
-
-				
-			}
+		for (CSSStyleRule styleRule : ruleList) {
+			String selectorText = styleRule.getSelectorText();
+			CSSStyleDeclaration styles = styleRule.getStyle();
+			
+	        for (int j = 0; j < styles.getLength(); j++) {
+	             String property = styles.item(j);
+	             result.add(new SingleRule(selectorText, property, styles.getPropertyCSSValue(property).getCssText()));
+	        }
 		}
 		
 		return result;
 	}
 	
-	private Element createLink(String rel, String href, String type) {
+	private static Element createLink(String rel, String href, String type) {
 		Element link = new Element("link");
 		
 		if(rel!=null) {
@@ -228,7 +206,7 @@ public class ThymesheetPreprocessorTests {
 		return link;
 	}
 	
-	private Document createDocWithLinks() {
+	public static Document createDocWithLinks() {
 		Document doc = new Document("docName");
 		Element html = new Element("html");
 		doc.addChild(html);
