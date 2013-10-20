@@ -1,12 +1,12 @@
-package com.connect_group.thymesheet.impl;
+package com.connect_group.thymesheet.templatemode;
 
-import org.thymeleaf.templatemode.ITemplateModeHandler;
 import org.thymeleaf.templateparser.ITemplateParser;
 import org.thymeleaf.templatewriter.ITemplateWriter;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
+import com.connect_group.thymesheet.impl.ThymesheetTemplateParser;
 
-public abstract class ThymesheetTemplateModeHandler implements ITemplateModeHandler {
+public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHandler {
 	
     private final String templateModeName;
     private ThymesheetTemplateParser parser;
@@ -15,7 +15,7 @@ public abstract class ThymesheetTemplateModeHandler implements ITemplateModeHand
 
     private ServletContextURLFactory urlFactory = null;
     
-    protected ThymesheetTemplateModeHandler(String templateModeName, ITemplateParser templateParser, ITemplateWriter templateWriter) {
+    public ThymesheetTemplateModeHandler(String templateModeName, ITemplateParser templateParser, ITemplateWriter templateWriter) {
     	this.templateModeName = templateModeName;
     	this.decoratedParser = templateParser;
     	this.templateWriter = templateWriter;
@@ -35,16 +35,6 @@ public abstract class ThymesheetTemplateModeHandler implements ITemplateModeHand
     public ITemplateWriter getTemplateWriter() {
         return this.templateWriter;
     }
-    
-	protected static int getPoolSize() {
-		int availableProcessors = Runtime.getRuntime().availableProcessors();
-		int poolSize = 
-                Math.min(
-                        (availableProcessors <= 2? availableProcessors : availableProcessors - 1),
-                        24);
-		
-		return poolSize;
-	}
 
 	public ServletContextURLFactory getUrlFactory() {
 		return urlFactory;
