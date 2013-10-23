@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Thymesheet by connect-group</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Thymesheet</h1>
+        <h2>CSS-inspired extension to @Thymeleaf</h2>
+        <a href="https://github.com/connect-group/thymesheet" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="thymesheet" class="anchor" href="#thymesheet"><span class="octicon octicon-link"></span></a>Thymesheet</h1>
+
+<p>CSS-inspired Pre-Processing extension to <a href="https://github.com/Thymeleaf" class="user-mention">@Thymeleaf</a> which supports CSS3 selectors.</p>
+
+<h2>
+<a name="what-is-thymeleaf" class="anchor" href="#what-is-thymeleaf"><span class="octicon octicon-link"></span></a>What is Thymeleaf?</h2>
+
+<p>Thymeleaf is a Java library. It is an XML / XHTML / HTML5 template engine (extensible to other formats) that can work both in web and non-web environments, best suited for serving XHTML/HTML5.</p>
+
+<p>It provides an optional module for integration with Spring MVC, so that you can use it as a complete substitute of JSP in your applications made with this technology, even with HTML5.</p>
+
+<p>The main goal of Thymeleaf is to provide an elegant and well-formed way of creating powerful natural templates that can be correctly displayed by browsers and therefore work also as static prototypes. </p>
+
+<p>For more detail, see <a href="http://www.thymeleaf.org/">http://www.thymeleaf.org/</a></p>
+
+<h3>
+<a name="what-does-thymeleaf-look-like" class="anchor" href="#what-does-thymeleaf-look-like"><span class="octicon octicon-link"></span></a>What does Thymeleaf look like?</h3>
+
+<p>It looks like this:</p>
+
+<pre><code>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th th:text="#{msgs.headers.name}"&gt;Name&lt;/th&gt;
+      &lt;th th:text="#{msgs.headers.price}"&gt;Price&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr th:each="prod : ${allProducts}"&gt;
+      &lt;td th:text="${prod.name}"&gt;Oranges&lt;/td&gt;
+      &lt;td th:text="${#numbers.formatDecimal(prod.price,1,2)}"&gt;0.99&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</code></pre>
+
+<h2>
+<a name="what-is-thymesheet" class="anchor" href="#what-is-thymesheet"><span class="octicon octicon-link"></span></a>What is Thymesheet?</h2>
+
+<p>When you develop HTML, it is good practice to place styling information outside of the HTML itself.
+This is done by adding a CSS "cascading style sheet", which tells the web browser how to style the HTML document.</p>
+
+<p>Thymesheet applies the same idea to Thymeleaf.  Add a link to an external Thymesheet file (or files), then remove the Thymesheet syntax from the HTML.</p>
+
+<p>Thymesheet re-uses the Thymeleaf "Dom Selector" syntax, a combination of XPath and CSS styles.</p>
+
+<h3>
+<a name="what-does-thymesheet-look-like" class="anchor" href="#what-does-thymesheet-look-like"><span class="octicon octicon-link"></span></a>What does Thymesheet look like?</h3>
+
+<p>The HTML looks like this,</p>
+
+<pre><code>&lt;head&gt;
+    &lt;link rel="thymesheet" href="/thymesheet.ts"/&gt;
+&lt;head&gt;
+&lt;body&gt;
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Name&lt;/th&gt;
+        &lt;th&gt;Price&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Oranges&lt;/td&gt;
+        &lt;td&gt;0.99&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+</code></pre>
+
+<p>The Thymesheet "thymesheet.ts" file looks like this,</p>
+
+<pre><code>table &gt; thead &gt; tr th:first-child {
+    th-text: "#{msgs.headers.name}"
+}
+
+table &gt; thead &gt; tr th:nth-child(2) {
+    th-text: "#{msgs.headers.price}"
+}
+
+table &gt; tbody &gt; tr {
+    th-each:"prod : ${allProducts}";
+}
+
+table &gt; tbody &gt; tr &gt; td:first-child {
+    th-text: "${prod.name}"
+}
+
+table &gt; tbody &gt; tr &gt; td:nth-child(2) {
+    th-text: "${#numbers.formatDecimal(prod.price,1,2)}"
+}
+</code></pre>
+
+<h2>
+<a name="sample-code" class="anchor" href="#sample-code"><span class="octicon octicon-link"></span></a>Sample Code</h2>
+
+<p>A sample application can be found at <a href="https://github.com/connect-group/thymesheet-sample">https://github.com/connect-group/thymesheet-sample</a></p>
+
+<h2>
+<a name="spring-mvc" class="anchor" href="#spring-mvc"><span class="octicon octicon-link"></span></a>Spring MVC</h2>
+
+<p>Thymesheet builds on Thymeleaf Spring integration. 
+See <a href="Thymesheet-Spring3">https://github.com/connect-group/thymesheet-spring3</a></p>
+
+<h2>
+<a name="more-information" class="anchor" href="#more-information"><span class="octicon octicon-link"></span></a>More information</h2>
+
+<p>More information can be found on the <a href="Wiki">https://github.com/connect-group/thymesheet/wiki</a>.</p>
+
+<h2>
+<a name="additional-credits" class="anchor" href="#additional-credits"><span class="octicon octicon-link"></span></a>Additional Credits</h2>
+
+<ul>
+<li>Thymesheet is an extension for <a href="http://www.thymeleaf.org/">Thymeleaf</a> v2.1 which is Apache 2 licensed.</li>
+<li>It has one other dependancy, <a href="http://cssparser.sourceforge.net/">cssparser</a> which is LGPL licensed.</li>
+<li>Additionally, the project uses a modified version of <a href="https://github.com/chrsan/css-selectors">css-selectors</a> by Christer Sandberg, which is Apache 2 licensed.</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/connect-group/thymesheet/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/connect-group/thymesheet/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/connect-group/thymesheet"></a> is maintained by <a href="https://github.com/connect-group">connect-group</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
