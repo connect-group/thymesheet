@@ -4,6 +4,7 @@ import org.thymeleaf.templateparser.ITemplateParser;
 import org.thymeleaf.templatewriter.ITemplateWriter;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
+import com.connect_group.thymesheet.ThymesheetLocator;
 import com.connect_group.thymesheet.impl.ThymesheetTemplateParser;
 
 public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHandler {
@@ -12,13 +13,19 @@ public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHan
     private ThymesheetTemplateParser parser;
     private final ITemplateParser decoratedParser;
     private final ITemplateWriter templateWriter;
+    private final ThymesheetLocator thymesheetLocator;
 
     private ServletContextURLFactory urlFactory = null;
     
-    public ThymesheetTemplateModeHandler(String templateModeName, ITemplateParser templateParser, ITemplateWriter templateWriter) {
+    public ThymesheetTemplateModeHandler(
+    		String templateModeName, 
+    		ITemplateParser templateParser, 
+    		ITemplateWriter templateWriter,
+    		ThymesheetLocator thymesheetLocator) {
     	this.templateModeName = templateModeName;
     	this.decoratedParser = templateParser;
     	this.templateWriter = templateWriter;
+		this.thymesheetLocator = thymesheetLocator;
     }
     
     public String getTemplateModeName() {
@@ -27,7 +34,7 @@ public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHan
 
     public ITemplateParser getTemplateParser() {
     	if(this.parser==null) {
-    		this.parser = new ThymesheetTemplateParser(decoratedParser, urlFactory);
+    		this.parser = new ThymesheetTemplateParser(decoratedParser, urlFactory, thymesheetLocator);
     	}
         return this.parser;
     }

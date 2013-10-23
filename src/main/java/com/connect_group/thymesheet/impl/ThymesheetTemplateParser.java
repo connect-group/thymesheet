@@ -10,14 +10,15 @@ import org.thymeleaf.dom.Node;
 import org.thymeleaf.templateparser.ITemplateParser;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
+import com.connect_group.thymesheet.ThymesheetLocator;
 
 public class ThymesheetTemplateParser implements ITemplateParser {
 	private final ITemplateParser decoratedParser;
 	private final ThymesheetPreprocessor preprocessor; //= new ThymesheetPreprocessor();
 	
-    public ThymesheetTemplateParser(ITemplateParser parser, ServletContextURLFactory urlFactory) {
+    public ThymesheetTemplateParser(ITemplateParser parser, ServletContextURLFactory urlFactory, ThymesheetLocator thymesheetLocator) {
     	this.decoratedParser = parser;
-    	this.preprocessor = new ThymesheetPreprocessor(urlFactory);
+    	this.preprocessor = new ThymesheetPreprocessor(urlFactory, thymesheetLocator);
     }
 
 	public Document parseTemplate(Configuration configuration,

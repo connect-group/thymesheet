@@ -8,44 +8,43 @@ import java.io.SequenceInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.thymeleaf.dom.Document;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.NestableNode;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSStyleRule;
 import org.w3c.dom.css.CSSStyleSheet;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
+import com.connect_group.thymesheet.ThymesheetLocator;
 import com.connect_group.thymesheet.css.selectors.NodeSelectorException;
 import com.steadystate.css.parser.CSSOMParser;
 import com.steadystate.css.parser.SACParserCSS3;
 
 public class ThymesheetPreprocessor {
-	private static final String LINK_ELEMENT_NAME = "link";
-	private static final String LINK_REL_ATTRIBUTE_VALUE = "thymesheet";
 	private final ServletContextURLFactory urlFactory;
+	private final ThymesheetLocator thymesheetLocator;
 	
 	public ThymesheetPreprocessor() {
 		super();
 		urlFactory = null;
+		thymesheetLocator = null;
 	}
 	
-	public ThymesheetPreprocessor(ServletContextURLFactory urlFactory) {
+	public ThymesheetPreprocessor(ServletContextURLFactory urlFactory, ThymesheetLocator thymesheetLocator) {
 		super();
 		this.urlFactory = urlFactory;
+		this.thymesheetLocator = thymesheetLocator;
 	}
 	
 	
 	
 	public void preprocess(Document document) throws IOException {
-		List<String> filePaths = getThymesheetFilePaths(document);
+		List<String> filePaths = thymesheetLocator.getThymesheetPaths(document);
 		InputStream thymesheetInputStream = getInputStream(filePaths);
 		AttributeRuleList attributeRules = getRuleList(thymesheetInputStream);
 		ElementRuleList elementRules=extractDOMModifications(attributeRules);
@@ -56,7 +55,7 @@ public class ThymesheetPreprocessor {
 		} catch (NodeSelectorException e) {
 			throw new IOException("Invalid CSS Selector", e);
 		}
-		removeThymesheetLinks(document);
+		thymesheetLocator.removeThymesheetLinks(document);
 	}
 
 	private ElementRuleList extractDOMModifications(List<CSSStyleRule> ruleList) {
@@ -75,20 +74,6 @@ public class ThymesheetPreprocessor {
 		}
 		
 		return modifierRules;
-	}
-
-	private void removeThymesheetLinks(Document document) {
-		Element head = getHead(document);
-		if(head!=null) {
-			List<Element> links = new ArrayList<Element>(10);
-			getThymesheetLinkElementsFromParent(head, links);
-			if(!links.isEmpty()) {
-				for(Element link : links) {
-					NestableNode parent = link.getParent();
-					parent.removeChild(link);
-				}
-			}
-		}
 	}
 
 	protected PseudoClass getDOMModifier(String selectorText) {
@@ -173,77 +158,5 @@ public class ThymesheetPreprocessor {
 		return  thymesheetUrl.openStream();
 	}
 
-	protected List<String> getThymesheetFilePaths(Document document) {
-		List<String> filePaths = null;
-		
-		Element head = getHead(document);
-		if(head!=null) {
-			List<Element> links = new ArrayList<Element>(10);
-			getThymesheetLinkElementsFromParent(head, links);
-			if(!links.isEmpty()) {
-				filePaths = new ArrayList<String>(links.size());
-				for(Element link : links) {
-					String href = link.getAttributeValue("href");
-					if(href!=null && href.length() > 0) {
-						filePaths.add(href);
-					}
-				}
-			}
-		}
-		
-		if(filePaths==null) {
-			filePaths = Collections.emptyList();
-		}
-		
-		return filePaths;
-	}
 
-	Element getHead(Document document) {
-		Element head = null;
-		
-		List<Element> children = document.getElementChildren();
-		for(Element child : children) {
-			if("html".equalsIgnoreCase(child.getNormalizedName())) {
-				
-				Element html = child;
-				children = html.getElementChildren();
-				for(Element htmlChild : children) {
-					if("head".equalsIgnoreCase(htmlChild.getNormalizedName())) {
-						head=htmlChild;
-						break;
-					}
-				}
-				
-				break;
-			}
-		}
-		
-		return head;
-	}
-	
-	void getThymesheetLinkElementsFromParent(Element parent, List<Element> links) {
-		// Link elements should be an immediate child of the head,
-		// however in Thymeleaf there could be a th:block in there.
-		List<Element> elements = parent.getElementChildren();
-		if(elements!=null) {
-			for(Element child : elements) {
-				if(isThymesheetLink(child)) {
-					links.add(child);
-				} else {
-					getThymesheetLinkElementsFromParent(child, links);
-				}
-			}
-		}
-	}
-	
-	boolean isThymesheetLink(Element element) {
-		boolean result = false;
-		
-		if(element!=null && LINK_ELEMENT_NAME.equalsIgnoreCase(element.getNormalizedName())) {
-			String relValue = element.getAttributeValue("rel");
-			result = LINK_REL_ATTRIBUTE_VALUE.equalsIgnoreCase(relValue);
-		}
-		
-		return result;
-	}
 }
