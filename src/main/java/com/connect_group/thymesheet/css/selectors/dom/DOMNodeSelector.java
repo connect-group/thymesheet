@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009-2012, Christer Sandberg
+ * Thymesheet modifications Copyright (c) 2013 Adam Perry, Connect Group
  */
 package com.connect_group.thymesheet.css.selectors.dom;
 
