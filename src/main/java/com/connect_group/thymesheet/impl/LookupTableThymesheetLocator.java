@@ -24,7 +24,7 @@ public class LookupTableThymesheetLocator implements ThymesheetLocator {
 		this.lookup = lookupTable;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	
 	public List<String> getThymesheetPaths(Document document) {
 		
 		if(lookup==null || lookup.isEmpty()) {
@@ -35,6 +35,11 @@ public class LookupTableThymesheetLocator implements ThymesheetLocator {
 		
 		Object value = lookup.get(name);
 		
+		return asList(value);
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<String> asList(Object value) {
 		if(value instanceof String) {
 			return Collections.singletonList((String)value);
 		}
@@ -44,23 +49,27 @@ public class LookupTableThymesheetLocator implements ThymesheetLocator {
 		}
 		
 		if(value instanceof Iterable) {
-			ArrayList<String> result = new ArrayList<String>();
-			for(Object o : (Iterable)value) {
-				if(o instanceof String) {
-					result.add((String)o);
-				} else if(o!=null) {
-					result.add(o.toString());
-				}
-				
-			}
-			return result;
+			return asList((Iterable)value);
 		}
 		
 		if(value!=null) {
 			return Collections.singletonList(value.toString());
 		}
 		
-		return null;
+		return Collections.emptyList();
+	}
+	
+	private List<String> asList(Iterable<?> collection) {
+		ArrayList<String> result = new ArrayList<String>();
+		for(Object o : collection) {
+			if(o instanceof String) {
+				result.add((String)o);
+			} else if(o!=null) {
+				result.add(o.toString());
+			}
+			
+		}
+		return result;
 	}
 
 	public void removeThymesheetLinks(Document document) {}

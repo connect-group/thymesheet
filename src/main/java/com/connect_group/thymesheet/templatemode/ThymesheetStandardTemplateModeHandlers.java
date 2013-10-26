@@ -55,6 +55,7 @@ public class ThymesheetStandardTemplateModeHandlers {
         }
         
         LookupTableThymesheetLocator lookupLocator = new LookupTableThymesheetLocator(props);
+        HtmlThymesheetLocator htmlLocator = new HtmlThymesheetLocator(props);
         
         XML = new ThymesheetTemplateModeHandler(
                 "XML",
@@ -70,22 +71,22 @@ public class ThymesheetStandardTemplateModeHandlers {
                 "XHTML", 
                 new XhtmlAndHtml5NonValidatingSAXTemplateParser(poolSize),
                 new XhtmlHtml5TemplateWriter(),
-                new HtmlThymesheetLocator());
+                htmlLocator);
         VALIDXHTML = new ThymesheetTemplateModeHandler(
                 "VALIDXHTML", 
                 new XhtmlValidatingSAXTemplateParser(poolSize),
                 new XhtmlHtml5TemplateWriter(),
-                new HtmlThymesheetLocator());
+                htmlLocator);
         HTML5 = new ThymesheetTemplateModeHandler(
                 "HTML5", 
                 new XhtmlAndHtml5NonValidatingSAXTemplateParser(poolSize),
                 new XhtmlHtml5TemplateWriter(),
-                new HtmlThymesheetLocator());
+                htmlLocator);
         LEGACYHTML5 = new ThymesheetTemplateModeHandler(
                 "LEGACYHTML5", 
                 new LegacyHtml5TemplateParser("LEGACYHTML5", poolSize),
                 new XhtmlHtml5TemplateWriter(),
-                new HtmlThymesheetLocator());
+                htmlLocator);
         
         ALL_TEMPLATE_MODE_HANDLERS =
                 new HashSet<ITemplateModeHandler>(

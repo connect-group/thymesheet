@@ -1,8 +1,9 @@
 package com.connect_group.thymesheet.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
@@ -10,9 +11,20 @@ import org.thymeleaf.dom.NestableNode;
 
 import com.connect_group.thymesheet.ThymesheetLocator;
 
-public class HtmlThymesheetLocator implements ThymesheetLocator {
+public class HtmlThymesheetLocator extends LookupTableThymesheetLocator implements ThymesheetLocator {
 	private static final String LINK_ELEMENT_NAME = "link";
 	private static final String LINK_REL_ATTRIBUTE_VALUE = "thymesheet";
+
+	public HtmlThymesheetLocator() {}
+	
+	public HtmlThymesheetLocator(Map<String,String> lookupTable) {
+		super(lookupTable);
+	}
+	
+	public HtmlThymesheetLocator(Properties lookupTable) {
+		super(lookupTable);
+	}
+
 	
 	public void removeThymesheetLinks(Document document) {
 		Element head = getHead(document);
@@ -29,26 +41,25 @@ public class HtmlThymesheetLocator implements ThymesheetLocator {
 	}
 	
 	public List<String> getThymesheetPaths(Document document) {
-		List<String> filePaths = null;
+		List<String> filePaths = new ArrayList<String>();
 		
-		Element head = getHead(document);
-		if(head!=null) {
-			List<Element> links = new ArrayList<Element>(10);
-			getThymesheetLinkElementsFromParent(head, links);
-			if(!links.isEmpty()) {
-				filePaths = new ArrayList<String>(links.size());
-				for(Element link : links) {
-					String href = link.getAttributeValue("href");
-					if(href!=null && href.length() > 0) {
-						filePaths.add(href);
-					}
+		NestableNode head = getHead(document);
+		if(head==null) {
+			head = document;
+		}
+		
+		List<Element> links = new ArrayList<Element>(10);
+		getThymesheetLinkElementsFromParent(head, links);
+		if(!links.isEmpty()) {
+			for(Element link : links) {
+				String href = link.getAttributeValue("href");
+				if(href!=null && href.length() > 0) {
+					filePaths.add(href);
 				}
 			}
 		}
 		
-		if(filePaths==null) {
-			filePaths = Collections.emptyList();
-		}
+		filePaths.addAll(super.getThymesheetPaths(document));
 		
 		return filePaths;
 	}
@@ -70,13 +81,16 @@ public class HtmlThymesheetLocator implements ThymesheetLocator {
 				}
 				
 				break;
+			} else if("head".equalsIgnoreCase(child.getNormalizedName())) {
+				head = child;
+				break;
 			}
 		}
 		
 		return head;
 	}
 	
-	void getThymesheetLinkElementsFromParent(Element parent, List<Element> links) {
+	void getThymesheetLinkElementsFromParent(NestableNode parent, List<Element> links) {
 		// Link elements should be an immediate child of the head,
 		// however in Thymeleaf there could be a th:block in there.
 		List<Element> elements = parent.getElementChildren();
