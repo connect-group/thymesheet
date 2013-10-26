@@ -36,8 +36,6 @@ This is done by adding a CSS "cascading style sheet", which tells the web browse
 
 Thymesheet applies the same idea to Thymeleaf.  Add a link to an external Thymesheet file (or files), then remove the Thymesheet syntax from the HTML.
 
-Thymesheet re-uses the Thymeleaf "Dom Selector" syntax, a combination of XPath and CSS styles.
-
 ### What does Thymesheet look like?
 The HTML looks like this,
 
