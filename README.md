@@ -88,7 +88,7 @@ The Thymesheet "thymesheet.ts" file looks like this,
 A sample application can be found at https://github.com/connect-group/thymesheet-sample
 
 ## More information
-More information can be found on the [https://github.com/connect-group/thymesheet/wiki](Wiki).
+More information can be found on the [Wiki](https://github.com/connect-group/thymesheet/wiki).
 
 ## Additional Credits
 - Thymesheet is an extension for [Thymeleaf](http://www.thymeleaf.org/) v2.1 which is Apache 2 licensed.
