@@ -2,6 +2,17 @@
 
 CSS-inspired Pre-Processing extension to @Thymeleaf which supports CSS3 selectors.
 
+## Maven
+
+Include the latest release from Maven,
+
+		<dependency>
+			<groupId>com.connect-group</groupId>
+			<artifactId>thymesheet-spring3</artifactId>
+			<version>2.1.0-beta2</version>
+		</dependency>
+
+
 
 ## What is Thymeleaf?
 Thymeleaf is a Java library. It is an XML / XHTML / HTML5 template engine (extensible to other formats) that can work both in web and non-web environments, best suited for serving XHTML/HTML5.
