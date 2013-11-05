@@ -9,7 +9,7 @@ Include the latest release from Maven,
 		<dependency>
 			<groupId>com.connect-group</groupId>
 			<artifactId>thymesheet-spring3</artifactId>
-			<version>2.1.0-beta2</version>
+			<version>2.1.0</version>
 		</dependency>
 
 
@@ -106,7 +106,7 @@ See also https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-t
 		<dependency>
 			<groupId>com.connect-group</groupId>
 			<artifactId>thymesheet-spring3</artifactId>
-			<version>2.1.0-beta2</version>
+			<version>2.1.0</version>
 		</dependency>
 		
 
