@@ -96,6 +96,20 @@ The Thymesheet "thymesheet.ts" file looks like this,
 ## Sample Code
 A sample application can be found at https://github.com/connect-group/thymesheet-sample
 
+## Spring Integration
+A separate Spring project integrates Thymesheet (and Thymeleaf) with Spring.
+See https://github.com/connect-group/thymesheet-spring3
+See also https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-the-webapp-or-WEB-INF
+
+
+
+		<dependency>
+			<groupId>com.connect-group</groupId>
+			<artifactId>thymesheet-spring3</artifactId>
+			<version>2.1.0-beta2</version>
+		</dependency>
+		
+
 ## More information
 More information can be found on the [Wiki](https://github.com/connect-group/thymesheet/wiki).
 
