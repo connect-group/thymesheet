@@ -32,7 +32,7 @@ public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHan
     private ThymesheetTemplateParser parser;
     private final ITemplateParser decoratedParser;
     private final ITemplateWriter templateWriter;
-    private final ThymesheetLocator thymesheetLocator;
+    protected final ThymesheetLocator thymesheetLocator;
 
     private ServletContextURLFactory urlFactory = null;
     
