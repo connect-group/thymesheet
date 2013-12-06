@@ -19,11 +19,15 @@
  */
 package com.connect_group.thymesheet.templatemode;
 
+import java.util.Set;
+
 import org.thymeleaf.templatemode.ITemplateModeHandler;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
+import com.connect_group.thymesheet.ThymesheetParserPostProcessor;
 
 public interface IThymesheetTemplateModeHandler extends ITemplateModeHandler {
 	ServletContextURLFactory getUrlFactory();
 	void setUrlFactory(ServletContextURLFactory urlContainer);
+	void setPostProcessors(Set<ThymesheetParserPostProcessor> postProcessors);
 }

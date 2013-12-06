@@ -31,7 +31,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.thymeleaf.Configuration;
 import org.thymeleaf.dom.Document;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRuleList;
@@ -40,6 +42,8 @@ import org.w3c.dom.css.CSSStyleSheet;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
 import com.connect_group.thymesheet.ThymesheetLocator;
+import com.connect_group.thymesheet.ThymesheetParserPostProcessor;
+import com.connect_group.thymesheet.ThymesheetProcessorException;
 import com.connect_group.thymesheet.css.selectors.NodeSelectorException;
 import com.steadystate.css.parser.CSSOMParser;
 import com.steadystate.css.parser.SACParserCSS3;
@@ -47,22 +51,31 @@ import com.steadystate.css.parser.SACParserCSS3;
 public class ThymesheetPreprocessor {
 	private final ServletContextURLFactory urlFactory;
 	private final ThymesheetLocator thymesheetLocator;
+	private final Set<ThymesheetParserPostProcessor> postProcessors;
 	
 	public ThymesheetPreprocessor() {
 		super();
 		urlFactory = null;
 		thymesheetLocator = null;
+		this.postProcessors = Collections.emptySet();
 	}
 	
-	public ThymesheetPreprocessor(ServletContextURLFactory urlFactory, ThymesheetLocator thymesheetLocator) {
+	public ThymesheetPreprocessor(ServletContextURLFactory urlFactory, ThymesheetLocator thymesheetLocator, Set<ThymesheetParserPostProcessor> postProcessors) {
 		super();
 		this.urlFactory = urlFactory;
 		this.thymesheetLocator = thymesheetLocator;
+		
+    	if(postProcessors==null) {
+    		this.postProcessors = Collections.emptySet();
+    	} else {
+    		this.postProcessors = postProcessors;
+    	}
+
 	}
 	
 	
 	
-	public void preprocess(Document document) throws IOException {
+	public void preProcess(String documentName, Document document) throws IOException {
 		List<String> filePaths = thymesheetLocator.getThymesheetPaths(document);
 		InputStream thymesheetInputStream = getInputStream(filePaths);
 		AttributeRuleList attributeRules = getRuleList(thymesheetInputStream);
@@ -75,6 +88,17 @@ public class ThymesheetPreprocessor {
 			throw new IOException("Invalid CSS Selector", e);
 		}
 		thymesheetLocator.removeThymesheetLinks(document);
+		postProcess(documentName, document);
+	}
+	
+	private void postProcess(String documentName, Document document) throws ThymesheetProcessorException {
+		try {
+			for(ThymesheetParserPostProcessor postProcessor : postProcessors) {
+				postProcessor.postProcess(documentName, document);
+			}
+		} catch(Exception ex) {
+			throw new ThymesheetProcessorException("Failed to postprocess document.", ex);
+		}
 	}
 
 	private ElementRuleList extractDOMModifications(List<CSSStyleRule> ruleList) {

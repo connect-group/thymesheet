@@ -19,11 +19,14 @@
  */
 package com.connect_group.thymesheet.templatemode;
 
+import java.util.Set;
+
 import org.thymeleaf.templateparser.ITemplateParser;
 import org.thymeleaf.templatewriter.ITemplateWriter;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
 import com.connect_group.thymesheet.ThymesheetLocator;
+import com.connect_group.thymesheet.ThymesheetParserPostProcessor;
 import com.connect_group.thymesheet.impl.ThymesheetTemplateParser;
 
 public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHandler {
@@ -35,6 +38,7 @@ public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHan
     protected final ThymesheetLocator thymesheetLocator;
 
     private ServletContextURLFactory urlFactory = null;
+    private Set<ThymesheetParserPostProcessor> postProcessors;
     
     public ThymesheetTemplateModeHandler(
     		String templateModeName, 
@@ -53,7 +57,7 @@ public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHan
 
     public ITemplateParser getTemplateParser() {
     	if(this.parser==null) {
-    		this.parser = new ThymesheetTemplateParser(decoratedParser, urlFactory, thymesheetLocator);
+    		this.parser = new ThymesheetTemplateParser(decoratedParser, urlFactory, thymesheetLocator, postProcessors);
     	}
         return this.parser;
     }
@@ -68,5 +72,9 @@ public class ThymesheetTemplateModeHandler implements IThymesheetTemplateModeHan
 
 	public void setUrlFactory(ServletContextURLFactory urlContainer) {
 		this.urlFactory = urlContainer;
+	}
+
+	public void setPostProcessors(Set<ThymesheetParserPostProcessor> postProcessors) {
+		this.postProcessors = postProcessors;
 	}
 }

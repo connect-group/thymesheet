@@ -22,6 +22,7 @@ package com.connect_group.thymesheet.impl;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.Set;
 
 import org.thymeleaf.Configuration;
 import org.thymeleaf.dom.Document;
@@ -30,21 +31,22 @@ import org.thymeleaf.templateparser.ITemplateParser;
 
 import com.connect_group.thymesheet.ServletContextURLFactory;
 import com.connect_group.thymesheet.ThymesheetLocator;
+import com.connect_group.thymesheet.ThymesheetParserPostProcessor;
 
 public class ThymesheetTemplateParser implements ITemplateParser {
 	private final ITemplateParser decoratedParser;
 	private final ThymesheetPreprocessor preprocessor; //= new ThymesheetPreprocessor();
 	
-    public ThymesheetTemplateParser(ITemplateParser parser, ServletContextURLFactory urlFactory, ThymesheetLocator thymesheetLocator) {
+    public ThymesheetTemplateParser(ITemplateParser parser, ServletContextURLFactory urlFactory, ThymesheetLocator thymesheetLocator, Set<ThymesheetParserPostProcessor> postProcessors) {
     	this.decoratedParser = parser;
-    	this.preprocessor = new ThymesheetPreprocessor(urlFactory, thymesheetLocator);
+    	this.preprocessor = new ThymesheetPreprocessor(urlFactory, thymesheetLocator, postProcessors);
     }
 
 	public Document parseTemplate(Configuration configuration,
 			String documentName, Reader source) {
 		Document doc = decoratedParser.parseTemplate(configuration, documentName, source);
 		try {
-			preprocessor.preprocess(doc);
+			preprocessor.preProcess(documentName, doc);
 		} catch (IOException e) {
 			throw new UnsupportedOperationException(e.getMessage(), e);
 		}
