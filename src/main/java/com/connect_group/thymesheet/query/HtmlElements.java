@@ -3,10 +3,8 @@ package com.connect_group.thymesheet.query;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 
@@ -18,16 +16,7 @@ public class HtmlElements extends LinkedHashSet<HtmlElement> {
 	private static final long serialVersionUID = 284598876009291447L;
 
 	public HtmlElements() {}
-	
-	public HtmlElements(Document document) {
-		HtmlElement documentPseudoElement = new HtmlElement(new Element("#document"));
-		List<Element> rootElements = document.getElementChildren();
-		for(Element child : rootElements) {
-			documentPseudoElement.getElement().addChild(child);
-		}
-		this.add(documentPseudoElement);
-
-	}
+		
 	public HtmlElements(Element element) {
 		this.add(new HtmlElement(element));
 	}

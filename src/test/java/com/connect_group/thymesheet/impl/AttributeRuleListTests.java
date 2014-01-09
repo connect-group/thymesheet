@@ -35,7 +35,7 @@ public class AttributeRuleListTests {
 	public void handleRule() throws NodeSelectorException {
 		//ThymesheetPreprocessor preprocess = new ThymesheetPreprocessor();
 		AttributeRuleList list = new AttributeRuleList();
-		Document document = ThymesheetPreprocessorTests.createDocWithLinksInHead();
+		Document document = ThymesheetPreprocessorTests.createDocWithLinks();
 		LinkedHashMap<String,String> properties = new LinkedHashMap<String,String>();
 		properties.put("data-th-text", "'tada'");
 		properties.put("data-th-utext", "'w00t'");
