@@ -19,7 +19,7 @@
  */
 package com.connect_group.thymesheet.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +32,6 @@ import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Text;
 import org.w3c.dom.css.CSSStyleDeclaration;
 import org.w3c.dom.css.CSSStyleRule;
-
-import com.connect_group.thymesheet.impl.ThymesheetPreprocessor;
 
 public class ThymesheetPreprocessorTests {
 
@@ -112,7 +110,7 @@ public class ThymesheetPreprocessorTests {
 		return link;
 	}
 	
-	public static Document createDocWithLinks() {
+	public static Document createDocWithLinksInHead() {
 		Document doc = new Document("docName");
 		Element html = new Element("html");
 		doc.addChild(html);
