@@ -60,7 +60,7 @@ public class DOMHelper {
     	Node n = null;
     	
     	int index = siblings.indexOf(node) + 1;
-    	if(index>0) {
+    	if(index>0 && index<siblings.size()) {
 	    	n = siblings.get(index);
 	    	while(!(n instanceof Element) && ++index < siblings.size()) {
 	    		n = siblings.get(index);
