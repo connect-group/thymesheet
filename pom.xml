@@ -30,7 +30,7 @@
 
   <groupId>com.connect-group</groupId>
   <artifactId>thymesheet</artifactId>
-  <version>2.1.2b-SNAPSHOT</version>
+  <version>2.1.2</version>
   <packaging>jar</packaging>
 
   <name>thymesheet</name>
