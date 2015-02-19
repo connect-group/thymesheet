@@ -113,7 +113,7 @@ See also https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-t
 
 		<dependency>
 			<groupId>com.connect-group</groupId>
-			<artifactId>thymesheet-spring3</artifactId>
+			<artifactId>thymesheet-spring4</artifactId>
 			<version>2.1.2</version>
 		</dependency>
 
