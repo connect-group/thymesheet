@@ -9,7 +9,7 @@ Include the latest release from Maven,
 		<dependency>
 			<groupId>com.connect-group</groupId>
 			<artifactId>thymesheet-spring3</artifactId>
-			<version>2.1.0</version>
+			<version>2.1.2</version>
 		</dependency>
 
 
@@ -97,18 +97,25 @@ The Thymesheet "thymesheet.ts" file looks like this,
 A sample application can be found at https://github.com/connect-group/thymesheet-sample
 
 ## Spring Integration
-A separate Spring project integrates Thymesheet (and Thymeleaf) with Spring.
-See https://github.com/connect-group/thymesheet-spring3
-See also https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-the-webapp-or-WEB-INF
+Two separate Spring project integrates Thymesheet (and Thymeleaf) with Spring 3/4.
+The source for these can be seen at https://github.com/connect-group/thymesheet-spring3 and https://github.com/connect-group/thymesheet-spring3
+See also https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-the-webapp-or-WEB-INF for information about using Spring.
 
-
+### Spring 3 Integration
 
 		<dependency>
 			<groupId>com.connect-group</groupId>
 			<artifactId>thymesheet-spring3</artifactId>
-			<version>2.1.0</version>
+			<version>2.1.2</version>
 		</dependency>
 		
+### Spring 4 Integration
+
+		<dependency>
+			<groupId>com.connect-group</groupId>
+			<artifactId>thymesheet-spring3</artifactId>
+			<version>2.1.2</version>
+		</dependency>
 
 ## More information
 More information can be found on the [Wiki](https://github.com/connect-group/thymesheet/wiki).
