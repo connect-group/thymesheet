@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Thymesheet : CSS-inspired extension to @Thymeleaf" />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Thymesheet : CSS-inspired extension to @Thymeleaf">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -32,12 +32,14 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="thymesheet" class="anchor" href="#thymesheet"><span class="octicon octicon-link"></span></a>Thymesheet</h1>
+<a id="thymesheet" class="anchor" href="#thymesheet" aria-hidden="true"><span class="octicon octicon-link"></span></a>Thymesheet</h1>
 
-<p>CSS-inspired Pre-Processing extension to <a href="https://github.com/Thymeleaf" class="user-mention">@Thymeleaf</a> which supports CSS3 selectors.</p>
+<p>CSS-inspired Pre-Processing extension to <a href="https://github.com/Thymeleaf" class="user-mention">@Thymeleaf</a> which supports CSS3 selectors.  Sometimes referred to as "Decoupled Templates". Separate Thymeleaf from your HTML!</p>
 
-<h1>
-<a name="get-from-maven" class="anchor" href="#get-from-maven"><span class="octicon octicon-link"></span></a>Get from Maven</h1>
+<h2>
+<a id="maven" class="anchor" href="#maven" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h2>
+
+<p>Include the latest release from Maven,</p>
 
 <pre><code>    &lt;dependency&gt;
         &lt;groupId&gt;com.connect-group&lt;/groupId&gt;
@@ -47,7 +49,7 @@
 </code></pre>
 
 <h2>
-<a name="what-is-thymeleaf" class="anchor" href="#what-is-thymeleaf"><span class="octicon octicon-link"></span></a>What is Thymeleaf?</h2>
+<a id="what-is-thymeleaf" class="anchor" href="#what-is-thymeleaf" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is Thymeleaf?</h2>
 
 <p>Thymeleaf is a Java library. It is an XML / XHTML / HTML5 template engine (extensible to other formats) that can work both in web and non-web environments, best suited for serving XHTML/HTML5.</p>
 
@@ -58,7 +60,7 @@
 <p>For more detail, see <a href="http://www.thymeleaf.org/">http://www.thymeleaf.org/</a></p>
 
 <h3>
-<a name="what-does-thymeleaf-look-like" class="anchor" href="#what-does-thymeleaf-look-like"><span class="octicon octicon-link"></span></a>What does Thymeleaf look like?</h3>
+<a id="what-does-thymeleaf-look-like" class="anchor" href="#what-does-thymeleaf-look-like" aria-hidden="true"><span class="octicon octicon-link"></span></a>What does Thymeleaf look like?</h3>
 
 <p>It looks like this:</p>
 
@@ -79,17 +81,15 @@
 </code></pre>
 
 <h2>
-<a name="what-is-thymesheet" class="anchor" href="#what-is-thymesheet"><span class="octicon octicon-link"></span></a>What is Thymesheet?</h2>
+<a id="what-is-thymesheet" class="anchor" href="#what-is-thymesheet" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is Thymesheet?</h2>
 
 <p>When you develop HTML, it is good practice to place styling information outside of the HTML itself.
 This is done by adding a CSS "cascading style sheet", which tells the web browser how to style the HTML document.</p>
 
 <p>Thymesheet applies the same idea to Thymeleaf.  Add a link to an external Thymesheet file (or files), then remove the Thymesheet syntax from the HTML.</p>
 
-<p>Thymesheet uses CSS3 syntax to traverse the DOM.</p>
-
 <h3>
-<a name="what-does-thymesheet-look-like" class="anchor" href="#what-does-thymesheet-look-like"><span class="octicon octicon-link"></span></a>What does Thymesheet look like?</h3>
+<a id="what-does-thymesheet-look-like" class="anchor" href="#what-does-thymesheet-look-like" aria-hidden="true"><span class="octicon octicon-link"></span></a>What does Thymesheet look like?</h3>
 
 <p>The HTML looks like this,</p>
 
@@ -138,17 +138,16 @@ table &gt; tbody &gt; tr &gt; td:nth-child(2) {
 </code></pre>
 
 <h2>
-<a name="sample-code" class="anchor" href="#sample-code"><span class="octicon octicon-link"></span></a>Sample Code</h2>
+<a id="sample-code" class="anchor" href="#sample-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sample Code</h2>
 
 <p>A sample application can be found at <a href="https://github.com/connect-group/thymesheet-sample">https://github.com/connect-group/thymesheet-sample</a></p>
 
 <h2>
-<a name="spring-mvc" class="anchor" href="#spring-mvc"><span class="octicon octicon-link"></span></a>Spring MVC</h2>
+<a id="spring-integration" class="anchor" href="#spring-integration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Spring Integration</h2>
 
-<p>Thymesheet builds on Thymeleaf Spring integration. 
-See <a href="https://github.com/connect-group/thymesheet-spring3">Thymesheet-Spring3</a></p>
-
-<p>See also <a href="https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-the-webapp-or-WEB-INF">information on the Wiki</a> and the <a href="https://github.com/connect-group/thymesheet-sample">Thymesheet sample project</a></p>
+<p>A separate Spring project integrates Thymesheet (and Thymeleaf) with Spring.
+See <a href="https://github.com/connect-group/thymesheet-spring3">https://github.com/connect-group/thymesheet-spring3</a>
+See also <a href="https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-the-webapp-or-WEB-INF">https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-the-webapp-or-WEB-INF</a></p>
 
 <pre><code>    &lt;dependency&gt;
         &lt;groupId&gt;com.connect-group&lt;/groupId&gt;
@@ -158,12 +157,12 @@ See <a href="https://github.com/connect-group/thymesheet-spring3">Thymesheet-Spr
 </code></pre>
 
 <h2>
-<a name="more-information" class="anchor" href="#more-information"><span class="octicon octicon-link"></span></a>More information</h2>
+<a id="more-information" class="anchor" href="#more-information" aria-hidden="true"><span class="octicon octicon-link"></span></a>More information</h2>
 
 <p>More information can be found on the <a href="https://github.com/connect-group/thymesheet/wiki">Wiki</a>.</p>
 
 <h2>
-<a name="additional-credits" class="anchor" href="#additional-credits"><span class="octicon octicon-link"></span></a>Additional Credits</h2>
+<a id="additional-credits" class="anchor" href="#additional-credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Additional Credits</h2>
 
 <ul>
 <li>Thymesheet is an extension for <a href="http://www.thymeleaf.org/">Thymeleaf</a> v2.1 which is Apache 2 licensed.</li>
