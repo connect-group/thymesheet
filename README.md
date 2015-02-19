@@ -1,6 +1,6 @@
 # Thymesheet
 
-CSS-inspired Pre-Processing extension to @Thymeleaf which supports CSS3 selectors.
+CSS-inspired Pre-Processing extension to @Thymeleaf which supports CSS3 selectors.  Sometimes referred to as "Decoupled Templates". Separate Thymeleaf from your HTML!
 
 ## Maven
 
