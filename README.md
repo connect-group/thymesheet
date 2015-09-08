@@ -98,7 +98,7 @@ A sample application can be found at https://github.com/connect-group/thymesheet
 
 ## Spring Integration
 Two separate Spring project integrates Thymesheet (and Thymeleaf) with Spring 3/4.
-The source for these can be seen at https://github.com/connect-group/thymesheet-spring3 and https://github.com/connect-group/thymesheet-spring3
+The source for these can be seen at https://github.com/connect-group/thymesheet-spring3 and https://github.com/connect-group/thymesheet-spring4
 See also https://github.com/connect-group/thymesheet/wiki/Hosting-TSS-Files-in-the-webapp-or-WEB-INF for information about using Spring.
 
 ### Spring 3 Integration
