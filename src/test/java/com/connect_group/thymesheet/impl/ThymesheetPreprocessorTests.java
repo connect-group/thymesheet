@@ -24,12 +24,14 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Text;
+import org.w3c.css.sac.CSSParseException;
 import org.w3c.dom.css.CSSStyleDeclaration;
 import org.w3c.dom.css.CSSStyleRule;
 
@@ -74,6 +76,15 @@ public class ThymesheetPreprocessorTests {
 		assertEquals(new SingleRule("*.fresh", "th-remove", "\"all-but-first\""), rules.get(2));
 		assertEquals(new SingleRule("*#someid", "th-text", "\"#a.b.c(${x})\""), rules.get(3));
 
+	}
+
+	@Test(expected = CSSParseException.class)
+	public void loadThymesheetFileWithInvalidSyntax() throws IOException {
+
+		ThymesheetPreprocessor preprocessor = new ThymesheetPreprocessor();
+		InputStream inputStream = preprocessor.getInputStream(Collections.singletonList("/test-invalid-syntax.ts"));
+
+		preprocessor.getRuleList(inputStream);
 	}
 	
 
