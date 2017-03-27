@@ -9,7 +9,7 @@ Include the latest release from Maven,
 		<dependency>
 			<groupId>com.connect-group</groupId>
 			<artifactId>thymesheet-spring3</artifactId>
-			<version>2.1.2</version>
+			<version>2.1.3</version>
 		</dependency>
 
 
