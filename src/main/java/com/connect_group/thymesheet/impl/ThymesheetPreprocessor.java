@@ -33,7 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.thymeleaf.Configuration;
+import com.steadystate.css.util.ThrowCssExceptionErrorHandler;
 import org.thymeleaf.dom.Document;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRuleList;
@@ -131,6 +131,7 @@ public class ThymesheetPreprocessor {
 	AttributeRuleList getRuleList(InputStream stream) throws IOException {
 		InputSource source = new InputSource(new InputStreamReader(stream));
         CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+        parser.setErrorHandler(ThrowCssExceptionErrorHandler.INSTANCE);
         CSSStyleSheet stylesheet = parser.parseStyleSheet(source, null, null);
         CSSRuleList ruleList = stylesheet.getCssRules();
         
