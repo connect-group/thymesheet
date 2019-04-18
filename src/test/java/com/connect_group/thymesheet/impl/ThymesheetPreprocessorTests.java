@@ -40,18 +40,18 @@ import com.connect_group.thymesheet.impl.ThymesheetPreprocessor;
 public class ThymesheetPreprocessorTests {
 
 
-	
-	@Test 
+
+	@Test
 	public void loadSingleThymesheetFile() throws IOException {
 		ThymesheetPreprocessor preprocess = new ThymesheetPreprocessor();
 		List<String> filePaths = new ArrayList<String>();
 		filePaths.add("/test.ts");
 		InputStream thymesheetInputStream = preprocess.getInputStream(filePaths);
 		AttributeRuleList attributeRules = preprocess.getRuleList(thymesheetInputStream);
-		
-		
+
+
 		List<SingleRule> rules = getSingleRules(attributeRules);
-		
+
 		assertEquals(3, rules.size());
 		assertEquals(new SingleRule("th:p", "th-utext", "\"'apple'\""), rules.get(0));
 		assertEquals(new SingleRule("p#someid", "th-utext", "\"#{banana}\""), rules.get(1));
@@ -59,8 +59,8 @@ public class ThymesheetPreprocessorTests {
 
 
 	}
-	
-	@Test 
+
+	@Test
 	public void loadTwoThymesheetFiles() throws IOException {
 		ThymesheetPreprocessor preprocess = new ThymesheetPreprocessor();
 		List<String> filePaths = new ArrayList<String>();
@@ -69,7 +69,7 @@ public class ThymesheetPreprocessorTests {
 		InputStream thymesheetInputStream = preprocess.getInputStream(filePaths);
 		AttributeRuleList ruleList = preprocess.getRuleList(thymesheetInputStream);
 		List<SingleRule> rules = getSingleRules(ruleList);
-		
+
 		assertEquals(4, rules.size());
 		assertEquals(new SingleRule("th:p", "th-utext", "\"'apple'\""), rules.get(0));
 		assertEquals(new SingleRule("p#someid", "th-utext", "\"#{banana}\""), rules.get(1));
@@ -86,43 +86,42 @@ public class ThymesheetPreprocessorTests {
 
 		preprocessor.getRuleList(inputStream);
 	}
-	
 
-	
+
 	private List<SingleRule> getSingleRules(AttributeRuleList ruleList) {
 		ArrayList<SingleRule> result = new ArrayList<SingleRule>();
-		
+
 		for (CSSStyleRule styleRule : ruleList) {
 			String selectorText = styleRule.getSelectorText();
 			CSSStyleDeclaration styles = styleRule.getStyle();
-			
+
 	        for (int j = 0; j < styles.getLength(); j++) {
 	             String property = styles.item(j);
 	             result.add(new SingleRule(selectorText, property, styles.getPropertyCSSValue(property).getCssText()));
 	        }
 		}
-		
+
 		return result;
 	}
-	
+
 	static Element createLink(String rel, String href, String type) {
 		Element link = new Element("link");
-		
+
 		if(rel!=null) {
 			link.setAttribute("rel", rel);
 		}
-		
+
 		if(href!=null) {
 			link.setAttribute("href", href);
 		}
-		
+
 		if(type!=null) {
 			link.setAttribute("type", type);
 		}
-		
+
 		return link;
 	}
-	
+
 	public static Document createDocWithLinks() {
 		Document doc = new Document("docName");
 		Element html = new Element("html");
@@ -135,26 +134,32 @@ public class ThymesheetPreprocessorTests {
 		head.addChild(createLink("stylesheet", "style.css", null));
 		head.addChild(createLink(null,null,null));
 		head.addChild(createLink("thymesheet", "style.ts", null));
-		
-		
+
+
 		Element artificial = new Element("block");
 		head.addChild(artificial);
 		artificial.addChild(createLink("thymesheet", "style2.ts", null));
-		
-		
+
+
 		Element h1 = new Element("h1");
 		h1.addChild(new Text("Heading"));
 		body.addChild(h1);
-		
+
 		Element para = new Element("p");
 		para.addChild(new Text("Hello, this is a test document"));
 		body.addChild(para);
-		
+
 		para = new Element("p");
 		para.setAttribute("id", "someid");
 		para.addChild(new Text("Second paragraph with an id."));
 		body.addChild(para);
-		
+
+		return doc;
+	}
+
+	public static Document createDocWithLinkOutsideHead() {
+		Document doc = new Document("docName");
+		doc.addChild(createLink("thymesheet", "style.ts", null));
 		return doc;
 	}
 
@@ -164,24 +169,24 @@ public class ThymesheetPreprocessorTests {
 			this.property = property==null? "" : property;
 			this.value = value==null? "" : value;
 		}
-		
+
 		@Override
 		public boolean equals(Object o) {
 			boolean result = false;
-			
+
 			if(o instanceof SingleRule) {
 				SingleRule other = (SingleRule)o;
 				result = selector.equals(other.selector) && property.equals(other.property) && value.equals(other.value);
 			}
-			
+
 			return result;
 		}
-		
+
 		@Override
 		public String toString() {
 			return selector + " { " + property + ": \"" + value + "\" }";
 		}
-		
+
 		public final String selector;
 		public final String property;
 		public final String value;

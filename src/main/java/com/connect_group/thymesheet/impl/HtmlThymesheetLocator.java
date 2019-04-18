@@ -46,41 +46,37 @@ public class HtmlThymesheetLocator extends LookupTableThymesheetLocator implemen
 
 	
 	public void removeThymesheetLinks(Document document) {
-		Element head = getHead(document);
-		if(head!=null) {
-			List<Element> links = new ArrayList<Element>(10);
-			getThymesheetLinkElementsFromParent(head, links);
-			if(!links.isEmpty()) {
-				for(Element link : links) {
-					NestableNode parent = link.getParent();
-					parent.removeChild(link);
-				}
-			}
+		for(Element link : getThymesheetLinks(document)) {
+			NestableNode parent = link.getParent();
+			parent.removeChild(link);
 		}
 	}
 	
 	public List<String> getThymesheetPaths(Document document) {
+
 		List<String> filePaths = new ArrayList<String>();
-		
-		NestableNode head = getHead(document);
-		if(head==null) {
-			head = document;
-		}
-		
-		List<Element> links = new ArrayList<Element>(10);
-		getThymesheetLinkElementsFromParent(head, links);
-		if(!links.isEmpty()) {
-			for(Element link : links) {
-				String href = link.getAttributeValue("href");
-				if(href!=null && href.length() > 0) {
-					filePaths.add(href);
-				}
+		for(Element link : getThymesheetLinks(document)) {
+			String href = link.getAttributeValue("href");
+			if(href != null && href.length() > 0) {
+				filePaths.add(href);
 			}
 		}
 		
 		filePaths.addAll(super.getThymesheetPaths(document));
 		
 		return filePaths;
+	}
+
+	List<Element> getThymesheetLinks(Document document) {
+
+		NestableNode head = getHead(document);
+		if(head == null) {
+			head = document;
+		}
+
+		List<Element> links = new ArrayList<Element>(10);
+		getThymesheetLinkElementsFromParent(head, links);
+		return links;
 	}
 
 	Element getHead(Document document) {
