@@ -9,9 +9,9 @@ import com.connect_group.thymesheet.css.util.Assert;
 
 /**
  * An implementation of {@link Specifier} for pseudo-classes.
- * <p/>
+ * <p>
  * Note:
- * <br/>
+ * <br>
  * The negation pseudo-class specifier is implemented by {@link NegationSpecifier}, and
  * the {@code nth-*} pseudo-classes are implemented by {@link PseudoNthSpecifier}.
  * 

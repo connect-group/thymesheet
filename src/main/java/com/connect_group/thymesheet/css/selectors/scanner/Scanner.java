@@ -19,11 +19,11 @@ import com.connect_group.thymesheet.css.util.Assert;
 /**
  * A selectors scanner as defined by
  * <a href="http://www.w3.org/TR/css3-selectors/#w3cselgrammar">Selectors Level 3 specification</a>.
- * <p/>
+ * <p>
  * This implementation uses the <a href="http://www.complang.org/ragel/">Ragel State Machine Compiler</a>.
- * <p/>
+ * <p>
  * Use the following command to generate the Java code for the scanner:
- * <br/>
+ * <br>
  * <pre>
  * ragel -J Scanner.java.rl -o ../java/se/fishtank/css/selectors/scanner/Scanner.java
  * </pre>

@@ -9,9 +9,9 @@ import com.connect_group.thymesheet.css.util.Assert;
 
 /**
  * An implementation of {@link Specifier} for attributes.
- * <p/>
+ * <p>
  * Note:
- * <br/>
+ * <br>
  * This implementation will also be used for ID selectors and class selectors.
  * 
  * @see <a href="http://www.w3.org/TR/css3-selectors/#attribute-selectors">Attribute selectors</a>
@@ -36,7 +36,7 @@ public class AttributeSpecifier implements Specifier {
 
     /**
      * Create a new attribute specifier with the specified attribute name.
-     * <p/>
+     * <p>
      * This attribute specifier is used to check if the attribute with the
      * specified name exists whatever the value of the attribute.
      *  

@@ -10,7 +10,7 @@ import com.connect_group.thymesheet.css.util.Assert;
 
 /**
  * Represents a selector.
- * <p/>
+ * <p>
  * A selector has a tag name, a combinator and a list of {@linkplain Specifier specifiers}.
  * 
  * @see <a href="http://www.w3.org/TR/css3-selectors/#selector-syntax">Selector syntax description</a>
@@ -53,7 +53,7 @@ public class Selector {
     
     /**
      * Create a new instance with the specified tag name and combinator.
-     * <p/>
+     * <p>
      * The list of {@linkplain #specifiers specifiers} will be set to {@code null}.
      * 
      * @param tagName The tag name to set.
@@ -69,7 +69,7 @@ public class Selector {
     
     /**
      * Create a new instance with the specified tag name and list of specifiers.
-     * <p/>
+     * <p>
      * The combinator will be set to {@link Combinator#DESCENDANT}.
      * 
      * @param tagName The tag name to set.

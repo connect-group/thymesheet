@@ -32,9 +32,9 @@ import com.connect_group.thymesheet.css.util.Assert;
 
 /**
  * An implementation of a DOM based {@link NodeSelector}.
- * <p/>
+ * <p>
  * <strong>Possible enhancements:</strong>
- * <br/>
+ * <br>
  * When searching for an element by its {@code id} we traverse the whole
  * tree. An attribute with the name <strong>id</strong> is not of the type
  * id unless it's been defined that way by a DTD etc, and we can't assume that
@@ -148,7 +148,7 @@ public class DOMNodeSelector implements NodeSelector<Node> {
     
     /**
      * Check the {@link NegationSpecifier}.
-     * <p/>
+     * <p>
      * This method will add the {@link Selector} from the specifier in
      * a list and invoke {@link #check(List)} with that list as the argument.
      *  

@@ -9,13 +9,13 @@ import java.util.Set;
 /**
  * A representation of the {@code NodeSelector} specified in the
  * <a href="http://www.w3.org/TR/selectors-api/">W3C Selectors API</a>.
- * <p/>
+ * <p>
  * This interface uses a generic type as the return type for the methods
  * {@link #querySelector(String)} and {@link #querySelectorAll(String)}.
  * The {@code NodeList} result type for {@link #querySelectorAll(String)}
  * has been replaced with a {@link Set}. Those changes will make it easier
  * to implement this interface for other XML technologies etc.
- * <p/>
+ * <p>
  * According to the spec the result of {@link #querySelectorAll(String)} must be
  * static. This restriction is not enforced by the implementations of this interface.
  * 
